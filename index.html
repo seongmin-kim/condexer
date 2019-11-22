@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>condex</title>
+    <script type="text/javascript">
+      function addKey() {
+        function create_key_form() {
+          let input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'condex-key';
+          input.placeholder = 'key';
+          return input;
+        }
+
+        function create_value_form() {
+          let input = document.createElement('input');
+          input.type = 'number';
+          input.className = 'condex-value';
+          input.min = '0';
+          input.max = '10';
+          return input;
+        }
+
+        function embed_in(cont, ...rest) {
+          if (typeof cont == 'string') {
+            let container = document.createElement(cont);
+            for (let item of rest) {
+              container.appendChild(item);
+            }
+            return container;
+          } else if (typeof cont == 'object') {
+            for (let item of rest) {
+              cont.appendChild(item);
+            }
+            return cont;
+          } else {
+            throw `not acceptable type ${typeof cont}`;
+          }
+        }
+
+        let key = embed_in("td", create_key_form());
+        let value = embed_in("td", create_value_form());
+        let row = embed_in('tr', key, value);
+
+        let dict_table = document.getElementById('condex-dict-table');
+        dict_table.appendChild(row);
+      }
+    </script>
+    <script src="./bootstrap.js"></script>
+  </head>
+  <body>
+    <div id="condex-wrapper">
+      <div>
+        <h3>source</h3>
+        <textarea id="condex-source" rows="8" cols="80" style="overflow-y: scroll;"></textarea>
+      </div>
+      <div>
+        <button style="width: 580px;" onclick="run();">Run</button>
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>key</th>
+              <th>value</th>
+            </tr>
+          </thead>
+          <tbody id="condex-dict-table">
+            <tr>
+              <td><input type="text" class="condex-key" placeholder="key" required></td>
+              <td><input type="number" class="condex-value" min="0" max="10"></td>
+            </tr>
+          </tbody>
+        </table>
+        <button onclick="addKey();">+ key value pair</button>
+      </div>
+      <div>
+        <h3>result</h3>
+        <textarea readonly id="condex-result" rows="8" cols="80"></textarea>
+      </div>
+    </div>
+  </body>
+</html>
